@@ -66,6 +66,11 @@
             <artifactId>kotlin-extensions</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.smallrye.reactive</groupId>
+            <artifactId>mutiny-kotlin</artifactId>
+            <version>2.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>

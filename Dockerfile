@@ -15,25 +15,15 @@ ENV MVN_CACHE=.m2/repository
 ENV MAVEN_OPTS="-Dmaven.repo.local=/root/$MVN_CACHE -Dorg.slf4j.simpleLogger.log.org.openapitools=off -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 ENV MAVEN_CLI_OPTS="--batch-mode --errors --fail-at-end --show-version"
 
-# List files to verify copy
-RUN ls -la
-
-# Show system info
-RUN uname -a
-
-# Echo build start
-RUN echo "Building project"
-
-# Make maven wrapper executable
-RUN chmod +x mvnw
-
-# Run maven build
-RUN ./mvnw $MAVEN_OPTS $MAVEN_CLI_OPTS clean package --define skipTests=true
-
-# List target directory contents
-RUN echo "Listing target directory after build:" && ls -l target/
-
-# Resolve dependencies
-RUN echo "Resolving Maven dependencies..." && ./mvnw dependency:resolve
+# Verify files are copied and run build
+RUN ls -la && \
+    uname -a && \
+    echo "Building project" && \
+    chmod +x mvnw && \
+    ./mvnw clean install -DskipTests -X && \
+    echo "Listing target directory after build:" && \
+    ls -l target/ && \
+    echo "Resolving Maven dependencies..." && \
+    ./mvnw dependency:resolve
 
 CMD ["tail", "-f", "/dev/null"]
